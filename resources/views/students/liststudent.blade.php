@@ -41,4 +41,9 @@
         @endforeach
         </tbody>
     </table>
+    <div class="mt-6 flex justify-center">
+    <div class="bg-white rounded shadow p-2">
+        {{ $students->links() }}
+    </div>
+</div>
 </div>

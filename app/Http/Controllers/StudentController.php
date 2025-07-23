@@ -10,13 +10,18 @@ class StudentController extends Controller
    
     public function index(Request $request)
     {
-        $search = $request->input('search');
+        $search = $request->search;
+        
+        $students = Student::when($request->search, function ($query) use ($request) {
+            return $query->whereAny([
+                'name',
+                'skill',
+                'grade',
+                'age',
+            ], 'like', '%' . $request->search . '%');
+        })->paginate(10);
 
-        $students = Student::when($search, function ($query, $search) {
-            return $query->where('name', 'like', "%{$search}%")
-                         ->orWhere('email', 'like', "%{$search}%");
-        })->get(); 
-
+       
         return view('students.index', compact('students', 'search'));
     }
 
